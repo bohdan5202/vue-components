@@ -22,21 +22,24 @@ function clear() {
 }
 
 const fieldError = computed<string | null>(() => {
-  let value = model.value
+  const value = model.value
 
   if (props.type === 'text') {
-    value = value.toString()
-    if (value.length < props.minLength) {
+    const value_str = value.toString()
+    if (value_str.length < props.minLength) {
       return `Minimun length is ${props.minLength}`
     }
   }
   if (props.type === 'number') {
-    value = Number(value)
-    if (props.min !== null && value < props.min) {
-      return `Min value is ${props.min}`
+    if (value === '') {
+      return null
     }
-    if (props.max !== null && value > props.max) {
-      return `Max value is ${props.max}`
+    const value_num = Number(value)
+    if (props.min !== null && value_num < props.min) {
+      return `Min value is ${props.min}, you entered ${value_num}`
+    }
+    if (props.max !== null && value_num > props.max) {
+      return `Max value is ${props.max}, you entered ${value_num}`
     }
   }
   return null
@@ -44,7 +47,12 @@ const fieldError = computed<string | null>(() => {
 </script>
 <template>
   <label :for="id"><slot>Fallback text</slot></label>
-  <input :id="id" v-model="model" :type="type" />
+  <input :id="id" v-model="model" :type="type" :class="{ highlighted: fieldError }" />
   <button @click="clear" type="button">Clear</button>
-  <p>{{ fieldError }}</p>
+  <p v-if="fieldError !== null">{{ fieldError }}</p>
 </template>
+<style scoped>
+.highlighted {
+  border-color: red;
+}
+</style>
