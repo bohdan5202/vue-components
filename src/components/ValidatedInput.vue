@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, useId, watch } from 'vue'
 
 const id = useId()
 
@@ -17,6 +17,13 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const model = defineModel<string | number>({ default: '' })
 
+const emit = defineEmits<{
+  'value-change': [value: string | number]
+  'error-validation': [fieldError: string | null]
+}>()
+
+watch(model, (newValue) => emit('value-change', newValue))
+
 function clear() {
   model.value = ''
 }
@@ -27,12 +34,12 @@ const fieldError = computed<string | null>(() => {
   if (props.type === 'text') {
     const value_str = value.toString()
     if (value_str.length < props.minLength) {
-      return `Minimun length is ${props.minLength}`
+      return `Minimum length is ${props.minLength}, you entered ${value_str.length}`
     }
   }
   if (props.type === 'number') {
     if (value === '') {
-      return null
+      return `Value is expected`
     }
     const value_num = Number(value)
     if (props.min !== null && value_num < props.min) {
@@ -44,12 +51,16 @@ const fieldError = computed<string | null>(() => {
   }
   return null
 })
+
+watch(fieldError, (newError) => emit('error-validation', newError), { immediate: true })
 </script>
 <template>
-  <label :for="id"><slot>Fallback text</slot></label>
-  <input :id="id" v-model="model" :type="type" :class="{ highlighted: fieldError }" />
-  <button @click="clear" type="button">Clear</button>
-  <p v-if="fieldError !== null">{{ fieldError }}</p>
+  <div>
+    <label :for="id"><slot>Fallback text</slot></label>
+    <input :id="id" v-model="model" :type="type" :class="{ highlighted: fieldError }" />
+    <button @click="clear" type="button">Clear</button>
+    <p v-if="fieldError !== null">{{ fieldError }}</p>
+  </div>
 </template>
 <style scoped>
 .highlighted {
