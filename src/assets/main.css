@@ -1,5 +1,6 @@
 body {
   font-family: system-ui, sans-serif;
+  background: #f4f5f7;
 }
 .field {
   display: flex;
@@ -12,11 +13,19 @@ body {
   gap: 8px;
 }
 input {
-  padding: 8px;
+  padding: 5px 8px;
+  font-size: 0.9rem;
   border: 2px solid #ccc;
   border-radius: 6px;
   flex: 1;
 }
+
+input:focus {
+  outline: none;
+  border-color: #4a90d9;
+  box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.2);
+}
+
 .highlited {
   border: red;
 }
@@ -31,14 +40,22 @@ label {
 }
 
 .person-form {
-  max-width: 420px;
-  margin: 0 auto;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 form {
+  width: 280px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 button[type='submit'] {
   padding: 10px;
@@ -49,19 +66,29 @@ button[type='submit'] {
   cursor: pointer;
 }
 
+button[type='submit']:hover:not(:disabled) {
+  background: darkgreen;
+  box-shadow: 0 2px 8px rgba(0, 128, 0, 0.3);
+}
+
 button:disabled {
   background: gray;
   cursor: not-allowed;
 }
 .summary {
+  background: white;
+  width: 220px;
   padding: 16px;
-  border: 1px solid #ccc;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
-  margin-bottom: 16px;
+}
+.summary p {
+  margin: 4px 0;
 }
 
 button {
-  padding: 8px 14px;
+  padding: 5px 10px;
+  font-size: 0.9rem;
   border: 1px solid #ccc;
   border-radius: 6px;
   background: white;

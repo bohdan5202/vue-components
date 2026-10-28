@@ -26,6 +26,7 @@ watch(model, (newValue) => emit('value-change', newValue))
 
 function clear() {
   model.value = ''
+  touched.value = false
 }
 
 const fieldError = computed<string | null>(() => {
