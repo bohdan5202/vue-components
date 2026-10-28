@@ -1,35 +1,86 @@
-@import './base.css';
+body {
+  font-family: system-ui, sans-serif;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-#app {
-  max-width: 1280px;
+.row {
+  display: flex;
+  gap: 8px;
+}
+input {
+  padding: 8px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  flex: 1;
+}
+.highlited {
+  border: red;
+}
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+label {
+  font-weight: 600;
+}
+
+.person-form {
+  max-width: 420px;
   margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+button[type='submit'] {
+  padding: 10px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+.summary {
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 16px;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+button {
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  color: #333;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    transform 0.1s;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+button:hover:not(:disabled) {
+  background: #f0f0f0;
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+button[type='submit']:hover:not(:disabled) {
+  background: darkgreen;
 }

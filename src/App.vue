@@ -3,5 +3,5 @@ import PersonForm from './components/PersonForm.vue'
 </script>
 
 <template>
-  <PersonForm> </PersonForm>
+  <PersonForm />
 </template>

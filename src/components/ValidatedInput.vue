@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId, watch } from 'vue'
+import { computed, useId, watch, ref } from 'vue'
 
 const id = useId()
 
@@ -53,13 +53,22 @@ const fieldError = computed<string | null>(() => {
 })
 
 watch(fieldError, (newError) => emit('error-validation', newError), { immediate: true })
+
+const touched = ref(false)
 </script>
 <template>
-  <div>
+  <div class="field">
     <label :for="id"><slot>Fallback text</slot></label>
-    <input :id="id" v-model="model" :type="type" :class="{ highlighted: fieldError }" />
-    <button @click="clear" type="button">Clear</button>
-    <p v-if="fieldError !== null">{{ fieldError }}</p>
+    <input
+      class="row"
+      :id="id"
+      v-model="model"
+      :type="type"
+      :class="{ highlighted: fieldError && touched }"
+      @blur="touched = true"
+    />
+    <button class="row" @click="clear" type="button">Clear</button>
+    <p class="error" v-if="fieldError !== null && touched">{{ fieldError }}</p>
   </div>
 </template>
 <style scoped>
