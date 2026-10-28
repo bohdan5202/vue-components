@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref, computed } from 'vue'
+import ValidatedInput from './ValidatedInput.vue'
 
 interface PersonData {
-  firstName: string
-  lastName: string
-  age: number | string
-  weight: number | string
-  city: string
+  firstName: string | number
+  lastName: string | number
+  age: string | number
+  weight: string | number
+  city: string | number
 }
 
 interface FieldConfig {
@@ -26,7 +27,7 @@ const form = reactive<PersonData>({
   city: '',
 })
 
-const field: FieldConfig[] = [
+const fields: FieldConfig[] = [
   { key: 'firstName', label: 'First name', type: 'text', minLength: 2 },
   { key: 'lastName', label: 'Last name', type: 'text', minLength: 2 },
   { key: 'age', label: 'Age', type: 'number', min: 1, max: 105 },
@@ -41,4 +42,38 @@ const errors = reactive<Record<keyof PersonData, string | null>>({
   weight: null,
   city: null,
 })
+const sent = ref(false)
+const anyError = computed(() => Object.values(errors).some((e) => e !== null))
+
+function send() {
+  sent.value = true
+}
+
+function sentClear() {
+  sent.value = false
+}
 </script>
+<template>
+  <div v-if="sent">
+    <p v-for="f in fields" :key="f.key">{{ f.label }}: {{ form[f.key] }}</p>
+    <button @click="sentClear">Clear send</button>
+  </div>
+  <div>
+    <form @submit.prevent="send">
+      <ValidatedInput
+        v-for="field in fields"
+        :key="field.key"
+        :type="field.type"
+        :min-length="field.minLength"
+        :max="field.max"
+        :min="field.min"
+        v-model="form[field.key]"
+        @error-validation="(e) => (errors[field.key] = e)"
+        @value-change="(v) => console.log('value:', v)"
+      >
+        {{ field.label }}
+      </ValidatedInput>
+      <button type="submit" :disabled="anyError">Submit</button>
+    </form>
+  </div>
+</template>
